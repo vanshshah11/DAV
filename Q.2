@@ -1,1 +1,37 @@
+import pandas as pd
 
+# Program a
+# Create a series with 5 elements
+series_a = pd.Series([7, 2, 5, 1, 3], index=['b', 'a', 'd', 'e', 'c'])
+
+# Display the series sorted on index and values separately
+sorted_index = series_a.sort_index()
+sorted_values = series_a.sort_values()
+
+print("Original Series:\n", series_a)
+print("\nSorted Series on Index:\n", sorted_index)
+print("\nSorted Series on Values:\n", sorted_values)
+
+# Program b
+# Create a series with N elements with some duplicate values
+series_b = pd.Series([3, 2, 5, 2, 1, 4, 3, 5, 6])
+
+# Find the minimum and maximum ranks assigned to the values
+min_ranks = series_b.rank(method='first')
+max_ranks = series_b.rank(method='max')
+
+print("\nOriginal Series:\n", series_b)
+print("\nMinimum Ranks (using 'first' method):\n", min_ranks)
+print("\nMaximum Ranks (using 'max' method):\n", max_ranks)
+
+# Program c
+# Create a series with some elements
+series_c = pd.Series([10, 5, 8, 12, 3])
+
+# Display the index value of the minimum and maximum element
+min_index = series_c.idxmin()
+max_index = series_c.idxmax()
+
+print("\nOriginal Series:\n", series_c)
+print("\nIndex of Minimum Element:", min_index)
+print("Index of Maximum Element:", max_index)
