@@ -1,0 +1,81 @@
+import pandas as pd
+import numpy as np
+
+# Part a and b - Merging data frames for workshop attendance
+file1 = "workshop1.xlsx"
+file2 = "workshop2.xlsx"
+
+df1 = pd.read_excel(file1)
+df2 = pd.read_excel(file2)
+
+# Perform merging to find names of students who attended both workshops
+both_workshops = pd.merge(df1, df2, on=['Name', 'Date', 'Duration'], how='inner')
+
+# Find names of students who attended a single workshop only
+single_workshop = pd.concat([df1, df2]).drop_duplicates(keep=False)
+
+# Display results for part a and b
+print("Students who attended both workshops:\n", both_workshops)
+print("\nStudents who attended a single workshop only:\n", single_workshop)
+
+# Create a random data frame
+np.random.seed(42)
+data = {
+    'Column1': np.random.rand(50),
+    'Column2': np.random.rand(50),
+    'Column3': np.random.rand(50)
+}
+
+df = pd.DataFrame(data)
+
+# Replace 10% of the values with null values
+null_indices = np.random.choice(df.size, size=int(0.1 * df.size), replace=False)
+df.values.flat[null_indices] = np.nan
+
+# Part a to g - Operations on the random data frame
+# Program a
+missing_values = df.isnull()
+missing_count = missing_values.sum().sum()
+print("\nMissing Values Count:\n", missing_count)
+
+# Program b
+df = df.dropna(thresh=len(df) - 5, axis=1)
+print("\nDataFrame after dropping columns with more than 5 null values:\n", df)
+
+# Program c
+max_sum_row_label = df.sum(axis=1).idxmax()
+df = df.drop(index=max_sum_row_label)
+print("\nDataFrame after dropping the row with the maximum sum of values:\n", df)
+
+# Program d
+df = df.sort_values(by='Column1')
+print("\nDataFrame sorted on the basis of the first column:\n", df)
+
+# Program e
+df = df.drop_duplicates(subset='Column1')
+print("\nDataFrame after removing duplicates from the first column:\n", df)
+
+# Program f
+correlation = df['Column1'].corr(df['Column2'])
+print("\nCorrelation between the first and second column:\n", correlation)
+
+# Program g
+covariance = df['Column2'].cov(df['Column3'])
+print("\nCovariance between the second and third column:\n", covariance)
+
+# Program h
+df['Column2_bins'] = pd.cut(df['Column2'], bins=5)
+print("\nDataFrame with discretized second column:\n", df)
+
+# Part c and d - Merging two data frames row-wise
+merged_row_wise = pd.concat([df1, df2], ignore_index=True)
+
+# Set multi-row indexes using 'Name' and 'Date'
+merged_row_wise.set_index(['Name', 'Date'], inplace=True)
+
+# Display the total number of records in the merged data frame
+print("\nTotal number of records in the merged data frame (row-wise):\n", len(merged_row_wise))
+
+# Generate descriptive statistics for the hierarchical data frame
+desc_stats = merged_row_wise.describe()
+print("\nDescriptive statistics for the hierarchical data frame:\n", desc_stats)
